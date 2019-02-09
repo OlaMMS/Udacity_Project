@@ -1,0 +1,369 @@
+---
+title: "Red Wine Dataset Analysis"
+author: "Ola Semsemiah"
+date: "1/2/2019"
+---
+
+========================================================
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Load all of the packages that you end up using in your analysis in this code
+# chunk.
+
+# Notice that the parameter "echo" was set to FALSE for this code chunk. This
+# prevents the code from displaying in the knitted HTML output. You should set
+# echo=FALSE for all code chunks in your file, unless it makes sense for your
+# report to show the code that generated a particular plot.
+
+# The other parameters for "message" and "warning" should also be set to FALSE
+# for other code chunks once you have verified that each plot comes out as you
+# want it to. This will clean up the flow of your report.
+
+library("ggplot2")
+library("dplyr")
+library("gridExtra")
+library("ggpubr")
+
+```
+
+```{r echo=FALSE, Load_the_Data,warning=FALSE,message=FALSE}
+# Load the Data
+Rwine <- read.csv('wineQualityReds.csv')
+summary(Rwine)
+
+```
+
+
+
+
+# Univariate Plots Section
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+
+# Quality
+hist(Rwine$quality,xlab="Quality degree", ylab="Wine", main = 'Wine Quality ',col = 'firebrick')
+
+```
+
+
+Red wine quality is normally distributed 
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#Density
+hist(Rwine$density,xlab="Density level", ylab="Wine", main = 'Wine Density ',col = '#DC143C')
+```
+
+
+Red wine density is normally distributed 
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# ph level
+hist(Rwine$pH,xlab="pH level", ylab="Wine", main = 'Wine pH level ',col = 'indianred')
+
+```
+
+
+Red wine ph level is normally distributed 
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# alcohol
+hist(Rwine$alcohol ,xlab="alcohol ", ylab="Wine", main = 'Alcohol  ',col = '#F08080')
+
+```
+
+The distribution of alcohol is right skewed
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#fixed.acidity
+plot(Rwine$fixed.acidity,  main="fixed.acidity", 
+   xlab="wine" , ylab=(expression(fixed~acidity)), pch=6, col=(c("dark blue")))
+```
+
+
+Red wine fixed acidity is right skewed  
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#volatile.acidity
+plot(Rwine$volatile.acidity,  main="volatile.acidity", 
+   xlab="wine" , ylab=(expression(volatile~acidity)), pch=6, col=(c("blue")))
+
+```
+
+
+Red wine volatile acidity distribution is unclear (bimodal or unimodel, right skewed or normal).
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#citric.acid
+plot(Rwine$citric.acid,  main="citric.acid", 
+   xlab="wine" , ylab=(expression(citric~acidity)), pch=6, col=(c("lightblue")))
+
+```
+
+
+Red wine citric acid distribution is not normal .
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#free.sulfur.dioxide
+plot(Rwine$free.sulfur.dioxide,  main="free.sulfur.dioxide", 
+   xlab="wine" , ylab=(expression(free~sulfur~dioxide)), pch=9, col=(c("#F0E68C")))
+
+
+```
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#total.sulfur.dioxide
+plot(Rwine$total.sulfur.dioxide,  main="total.sulfur.dioxide", 
+   xlab="wine" , ylab=(expression(total~sulfur~dioxide)), pch=9, col=(c("#BDB76B")))
+
+```
+
+
+Both total and free dioxide distribuation are right skewed   
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# chlorides
+hist(Rwine$chlorides ,xlab="chlorides ", ylab="Wine", main = 'chlorides  ',col = 'darkolivegreen')
+
+```
+
+
+Red wine chlorides distribution normal .
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# residual.sugar 
+hist(Rwine$residual.sugar  ,xlab="residual.sugar", ylab="Wine", main = 'residual.sugar ',col = '#808000')
+
+
+```
+
+
+The distribution of residual sugar is right skewed
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# sulphates
+hist(Rwine$sulphates ,xlab="sulphates ", ylab="Wine", main = 'sulphates',col = '#6B8E23')
+
+```
+
+
+The distribution of sulphates is right skewed 
+
+
+
+### What is the structure of your dataset?
+
+Data set rows represnt 1,599 red wines 
+Data Set 13 colums represnt red wine features on the chemical properties of the wine (featers are plotted in the previoes section )
+
+
+### What is/are the main feature(s) of interest in your dataset?
+
+Quality
+
+75% of wine have quality degree that is lower than 6.
+
+
+### What other features in the dataset do you think will help support your investigation into your feature(s) of interest?
+
+Volatile acidity,pH, alcohol
+
+
+# Bivariate Plots Section
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# Alcohol and Quality
+ggplot(Rwine,
+  aes(y =alcohol , x = quality))+
+  geom_jitter(width = 0.25, height = 0, alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+    ggtitle(' Alcohol vs. Quality')+
+    xlab("Quality ") +
+  ylab("Alcohol ")
+
+```
+
+
+Relationship between Alchoal and wine quality
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# pH and Quality
+ggplot(Rwine,
+  aes(y =pH , x = quality))+
+  geom_jitter(width = 0.25, height = 0, alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+    ggtitle(' pH vs.Quality')+
+    xlab("Quality") +
+  ylab("pH")
+
+```
+
+
+Relationship between pH and wine quality
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#Volatile acidity and Quality
+ggplot(Rwine,aes(y =volatile.acidity, x = quality))+
+  geom_jitter(width = 0.25, height = 0, alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+    ggtitle(' Volatile acidity vs.Quality')+
+    xlab("Quality") +
+  ylab("Volatile acidity")
+
+```
+
+
+Relationship between Volatile acidity and wine quality
+
+
+# Bivariate Analysis
+
+
+### Talk about some of the relationships you observed in this part of the investigation. How did the feature(s) of interest vary with other features in the dataset?
+
+
+
+There is a positive relationship between quality degree and alcohol. 
+
+
+
+### Did you observe any interesting relationships between the other features (not the main feature(s) of interest)?
+There is a negative relationship between quality degree and volatile acidity
+
+
+
+### What was the strongest relationship you found?
+
+
+Quality vs Alcohol 
+
+# Multivariate Plots Section
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# Alcohol, Volatile Acidity and  Quality
+ggplot(Rwine,
+  aes(y =alcohol , x = volatile.acidity, color = as.factor(quality))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+  
+    ggtitle('Alcohol, Volatile Acidity and  Quality')+
+    xlab((expression(Volatile~Acidity)))   +
+  ylab("Alcohol")
+```
+
+Relationship between Alcohol, Volatile Acidity and  Quality
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+#Alcohol ,pH and by Quality
+ggplot(Rwine,
+  aes(y =alcohol , x = pH, color = as.factor(quality))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+  scale_color_brewer(palette = "RdYlBu", name="Quality", direction=-1)+
+    ggtitle('Alcohol ,pH and by Quality')+
+    xlab('pH')   +
+  ylab("Alcohol")
+
+```
+
+
+Relationship between Alcohol ,pH and by Quality
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# Alcohol , density and by Quality
+ggplot(Rwine,
+  aes(y =alcohol , x = density, color = as.factor(quality))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+  scale_color_brewer(palette = "RdYlBu", name="Quality", direction=-1)+
+    ggtitle('Alcohol , density and by Quality')+
+    xlab('density')   +
+  ylab("Alcohol")
+
+```
+
+Relationship between Alcohol , density and by Quality
+
+
+
+# Multivariate Analysis
+
+1- Density does not play a role in changing the quality with constant Alcohol
+2- More alcohol and less pH or less Volatile Acidity constration produce more quality 
+
+------
+
+# Final Plots and Summary
+
+### Plot One
+
+```{r echo=FALSE, Plot_One}
+ggplot(Rwine,
+  aes(y =alcohol , x = quality))+
+  geom_jitter(width = 0.25, height = 0, alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+    ggtitle(' Alcohol vs. Quality')+
+    xlab("Quality ") +
+  ylab("Alcohol ")
+```
+
+
+Alcohol percentage has played a big role in determining the quality of Wines
+
+
+### Plot Two
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+ggplot(Rwine,
+  aes(y =alcohol , x = pH, color = as.factor(quality))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE,size=1)+
+  scale_color_brewer(palette = "RdYlBu", name="Quality", direction=-1)+
+    ggtitle('Alcohol ,pH and by Quality')+
+    xlab('pH')   +
+  ylab("Alcohol")
+
+```
+
+pH affect the quality in a negitive way , More alcohol but less pH produce more quality 
+
+
+### Plot Three
+
+```{r echo=FALSE,warning=FALSE,message=FALSE, Plot_Three}
+
+hist(Rwine$quality,xlab="Quality degree", ylab="Wine", main = 'Wine Quality ',col = 'firebrick')
+```
+
+our dataset contains 'Average' quality wines and there is not too many data in the extreme ranges, thus it is normally distibuted 
+
+
+
+------
+
+# Reflection
+
+- In this project we showed that there are many factors that affect the quality of wine, incresing the level 
+of some factors might have negative or postive effect to the quality dapanding on the factor type 
+
+- for this project I needed to see some extra resourses for better understanding 
+
+- In genral dataset were enough for predicting the wine quality 
+
+- For future analysis, I would love to have a dataset having a rank for the wine by different tasters so I can explore how humen elemnt can affect the quality 
+
